@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="myFirstApp">
+  <head>
+    <meta charset="utf-8">
+    <title>My first AngularJS App</title>
+    <script id="__bs_script__">//<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.16.0'><\/script>".replace("HOST", location.hostname));
+//]]></script>
+  <script src="angular.min.js" charset="utf-8"></script>
+  <script src="app.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <h1>My First AngularJS App</h1>
+    <div ng-controller="myFirstController">
+      {{sayHello()}}
+      <input type="text" ng-model="name"/>
+      The Value inside the input is: {{name}}
+    </div>
+  </body>
+</html>
