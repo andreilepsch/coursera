@@ -3,8 +3,54 @@
   <head>
     <meta charset="utf-8">
     <meta name="author" content="Andrei Lepsch">
-    
+
     <title>Dating Web Site Assessment - Part1</title>
+    <script src="https://www.cse.ust.hk/~rossiter/dating_web_site.js"></script>
+    <style>
+      fieldset{
+        background:lightyellow;
+        border: 10px solid yellow;
+        margin-bottom: 10px;
+        width:720px;
+      }
+      label {
+        width: 180px;
+        display: inline-block;
+        text-align: right;
+        vertical-align: top;
+      }
+      label:hover {
+        font-size:40px
+      }
+      input:hover {
+        height: 30px;
+      }
+      textarea {
+        width: 360px;
+        height: 50px;
+      }
+      .title-range {
+        width: 80px;
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+      }
+      .red {
+        background-color: darkred;
+        color: #fff;
+      }
+      .purple {
+        background-color: purple;
+        color: #fff;
+      }
+      .auto-width {
+        width: auto;
+      }
+      img {
+        width: 150px;
+        height: auto;
+      }
+    </style>
   </head>
   <body>
     <h1>Please Enter Your Details For Our Dating Website!</h1>
@@ -23,8 +69,8 @@
           <input type="text" id="name" name="name" placeholder="Your Full Name" required>
           <br>
           <label>Gender:</label>
-          <label for="male"><input type="radio" id="male" name="gender" value="male" required>Male</label>
-          <label for="female"><input type="radio" id="female" name="gender" value="female" required>Female</label>
+          <label class="auto-width" for="male"><input type="radio" id="male" name="gender" value="male" required>Male</label>
+          <label class="auto-width" for="female"><input type="radio" id="female" name="gender" value="female" required>Female</label>
           <br>
           <label for="age">Age:</label>
           <input type="number" id="age" name="age" value="" required>
@@ -48,14 +94,14 @@
       <fieldset>
           <legend>Your Indicators</legend>
           <label for="height">Height</label>
-          <span>Short</span>
+          <span class="title-range red">Short</span>
           <input type="range" id="height" name="height" min="0" max="100" step="5" value="50">
-          <span>Tall</span>
+          <span class="title-range purple">Tall</span>
           <br>
           <label for="salary">Salary</label>
-          <span>Poor</span>
+          <span class="title-range red">Poor</span>
           <input type="range" id="salary" name="salary" min="0" max="100" step="5" value="50">
-          <span>Rich</span>
+          <span class="title-range purple">Rich</span>
       </fieldset>
       <fieldset>
           <legend>Your Contact Information</legend>
@@ -69,9 +115,9 @@
           <textarea id="address" name="address" rows="2" cols="40"></textarea>
           <br>
           <label>Method to contact you:</label>
-          <label for="contact-email"><input type="checkbox" id="contact-email" name="contact" value="contact-email">Email</label>
-          <label for="contact-whatsapp"><input type="checkbox" id="contact-whatsapp" name="contact" value="whatsapp">Whatsapp</label>
-          <label for="contact-in-app-chat"><input type="checkbox" id="contact-in-app-chat" name="contact" value="in-app-chat">In-app chat</label>
+          <label class="auto-width" for="contact-email"><input type="checkbox" id="contact-email" name="contact" value="contact-email">Email</label>
+          <label class="auto-width" for="contact-whatsapp"><input type="checkbox" id="contact-whatsapp" name="contact" value="whatsapp">Whatsapp</label>
+          <label class="auto-width" for="contact-in-app-chat"><input type="checkbox" id="contact-in-app-chat" name="contact" value="in-app-chat">In-app chat</label>
       </fieldset>
       <input type="submit" name="name" value="Submit">
     </form>
