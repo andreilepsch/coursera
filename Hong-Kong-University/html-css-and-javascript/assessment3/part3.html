@@ -28,18 +28,20 @@
 
       function generateFaces() {
         var theLeftSide  = document.getElementById('leftSide');
+        var theRightSide  = document.getElementById('rightSide');
 
         for (var i = 0; i < numberOfFaces; i++) {
-          var topValue = Math.floor(Math.random() * 400);
-          var leftValue = Math.floor(Math.random() * 400);
           var smileImg = document.createElement('img');
           smileImg.src = 'http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png';
-          smileImg.style.top = topValue + 'px';
-          smileImg.style.left = leftValue + 'px';
+          smileImg.style.top = Math.floor(Math.random() * 400) + 'px';
+          smileImg.style.left = Math.floor(Math.random() * 400) + 'px';
           theLeftSide.appendChild(smileImg);
         }
-
+        var leftSideImages = theLeftSide.cloneNode(true);
+        leftSideImages.removeChild(leftSideImages.lastChild);
+        theRightSide.appendChild(leftSideImages);
       }
+
     </script>
   </head>
   <body onload="generateFaces()">
