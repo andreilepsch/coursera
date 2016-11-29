@@ -8,7 +8,7 @@
               </button>
               <div class="media">
                   <div class="media-left media-middle">
-                      <a href="#">
+                      <a ui-sref="app.menu">
                       <img class="media-object img-thumbnail"
                        ng-src={{dish.image}} alt="{{dish.name}}">
                       </a>
@@ -21,22 +21,6 @@
                   </div>
               </div>
           </div>
-            <!-- <div class="col-xs-9 col-xs-offset-2">
-                <h4 class="media-heading">Customer Comments
-                    <span style="font-size: 14px; color:grey; padding-left:10px;
-                        padding-right:5px">Sort by:</span>
-                    <input type="text" style="font-size:14px;color:grey"
-                        ng-model="inputVal" ng-change="testcheck(inputVal)">
-                </h4>
-                <div class=media ng-repeat="dish in dish.comments | orderBy:inputVal">
-                    <blockquote>
-                        <p>{{dish.rating}} Stars</p>
-                        <p>{{dish.comment}}</p>
-                        <footer>{{dish.author}}, {{dish.date | date:'fullDate'}}
-                    </blockquote>
-                </div>
-            </div> -->
-
 
             <div class="col-xs-9 col-xs-offset-1" ng-controller="DishCommentController">
               <h4 class="media-heading">Customer Comments
