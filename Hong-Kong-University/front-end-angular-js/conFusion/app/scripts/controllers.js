@@ -91,9 +91,18 @@ angular.module('confusionApp')
 
         .controller('IndexController',[ '$scope', 'menuFactory', 'corporateFactory',function ($scope, menuFactory, corporateFactory) {
 
-              $scope.featured = menuFactory.getDish(0);
-              $scope.promotion = menuFactory.getPromotion(0);
-              $scope.specialist = corporateFactory.getLeader(3);
+            // get random featured dish from array of dishes
+            	$scope.featured = menuFactory.getDish(getRandom(menuFactory.getDishes().length));
+            	$scope.promotion = menuFactory.getPromotion(0);
+            	$scope.execChef = corporateFactory.getLeader(3);
+
+            	function getRandom(max) {
+            		return Math.floor(Math.random() * max);
+            	}
+
+              // $scope.featured = menuFactory.getDish(0);
+              // $scope.promotion = menuFactory.getPromotion(0);
+              // $scope.specialist = corporateFactory.getLeader(3);
 
         }])
 
