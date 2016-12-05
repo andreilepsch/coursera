@@ -8,7 +8,13 @@ angular.module('confusionApp')
             $scope.filtText = '';
             $scope.showDetails = false;
 
-            $scope.dishes = menuFactory.getDishes();
+            $scope.dishes = {};
+
+            menuFactory.getDishes()
+            .then(function (response) {
+              $scope.dishes = response.data;
+              $scope.showDetails=true;
+            });
 
             $scope.select = function(setTab) {
                 $scope.tab = setTab;
@@ -69,7 +75,12 @@ angular.module('confusionApp')
 
         .controller('DishDetailController', ['$scope','$stateParams','menuFactory', function($scope,$stateParams,menuFactory) {
 
-            $scope.dish = menuFactory.getDish(parseInt($stateParams.id,10));
+            $scope.dish = {};
+            menuFactory.getDish(parseInt($stateParams.id,10))
+            .then(function (response) {
+              $scope.dish = response.data;
+            });
+
             $scope.comment = {author: "", rating: 5, comment: "", date: new Date().toISOString()};
 
         }])
@@ -92,17 +103,23 @@ angular.module('confusionApp')
         .controller('IndexController',[ '$scope', 'menuFactory', 'corporateFactory',function ($scope, menuFactory, corporateFactory) {
 
             // get random featured dish from array of dishes
-            	$scope.featured = menuFactory.getDish(getRandom(menuFactory.getDishes().length));
-            	$scope.promotion = menuFactory.getPromotion(0);
-            	$scope.execChef = corporateFactory.getLeader(3);
+            	// $scope.featured = {};
+              // menuFactory.getDish(getRandom(menuFactory.getDishes().length));
+            	// $scope.promotion = menuFactory.getPromotion(0);
+            	// $scope.execChef = corporateFactory.getLeader(3);
+              //
+            	// function getRandom(max) {
+            	// 	return Math.floor(Math.random() * max);
+            	// }
 
-            	function getRandom(max) {
-            		return Math.floor(Math.random() * max);
-            	}
-
-              // $scope.featured = menuFactory.getDish(0);
-              // $scope.promotion = menuFactory.getPromotion(0);
-              // $scope.specialist = corporateFactory.getLeader(3);
+              $scope.featured = {};
+              menuFactory.getDish(0)
+              .then(function (response) {
+                $scope.featured = response.data;
+                $scope.showDetails=true;
+              });
+              $scope.promotion = menuFactory.getPromotion(0);
+              $scope.specialist = corporateFactory.getLeader(3);
 
         }])
 
