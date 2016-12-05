@@ -8,13 +8,22 @@ angular.module('confusionApp')
             $scope.filtText = '';
             $scope.showDetails = false;
 
+            $scope.showMenu = false;
+            $scope.message = 'Loading...';
+
             $scope.dishes = {};
 
             menuFactory.getDishes()
-            .then(function (response) {
-              $scope.dishes = response.data;
-              $scope.showDetails=true;
-            });
+            .then(
+              function (response) {
+                $scope.dishes = response.data;
+                $scope.showDetails=true;
+                $scope.showMenu = true;
+              },
+              function (response) {
+                $scope.message = 'Error: '+response.status+' '+response.statusText;
+              }
+            );
 
             $scope.select = function(setTab) {
                 $scope.tab = setTab;
@@ -76,10 +85,19 @@ angular.module('confusionApp')
         .controller('DishDetailController', ['$scope','$stateParams','menuFactory', function($scope,$stateParams,menuFactory) {
 
             $scope.dish = {};
+            $scope.showDish = false;
+            $scope.message = 'Loading...';
+
             menuFactory.getDish(parseInt($stateParams.id,10))
-            .then(function (response) {
-              $scope.dish = response.data;
-            });
+            .then(
+              function (response) {
+                $scope.dish = response.data;
+                $scope.showDish = true;
+              },
+              function (response) {
+                $scope.message = 'Error: '+response.status+' '+response.statusText;
+              }
+            );
 
             $scope.comment = {author: "", rating: 5, comment: "", date: new Date().toISOString()};
 
@@ -102,8 +120,8 @@ angular.module('confusionApp')
 
         .controller('IndexController',[ '$scope', 'menuFactory', 'corporateFactory',function ($scope, menuFactory, corporateFactory) {
 
-            // get random featured dish from array of dishes
-            	// $scope.featured = {};
+            // get random dish from array of dishes
+            	// $scope.dish = {};
               // menuFactory.getDish(getRandom(menuFactory.getDishes().length));
             	// $scope.promotion = menuFactory.getPromotion(0);
             	// $scope.execChef = corporateFactory.getLeader(3);
@@ -112,12 +130,19 @@ angular.module('confusionApp')
             	// 	return Math.floor(Math.random() * max);
             	// }
 
-              $scope.featured = {};
+              $scope.dish = {};
+              $scope.showDish = false;
+              $scope.message = 'Loading...';
               menuFactory.getDish(0)
-              .then(function (response) {
-                $scope.featured = response.data;
-                $scope.showDetails=true;
-              });
+              .then(
+                function (response) {
+                  $scope.dish = response.data;
+                  $scope.showDish = true;
+                },
+                function (response) {
+                  $scope.message = 'Error: '+response.status+' '+response.statusText;
+                }
+              );
               $scope.promotion = menuFactory.getPromotion(0);
               $scope.specialist = corporateFactory.getLeader(3);
 
