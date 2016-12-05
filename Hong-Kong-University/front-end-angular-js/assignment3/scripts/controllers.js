@@ -76,15 +76,21 @@ angular.module('confusionApp')
 
         .controller('DishCommentController', ['$scope', function($scope) {
 
-            $scope.mycomment = {rating:5, comment:"", author:"", date:""};
-            $scope.submitComment = function () {
-                $scope.mycomment.date = new Date().toISOString();
-                console.log($scope.mycomment);
-                $scope.dish.comments.push($scope.mycomment);
-                $scope.commentForm.$setPristine();
-                $scope.mycomment = {rating:5, comment:"", author:"", date:""};
+          $scope.mycomment = {rating:5, comment:"", author:"", date:""};
+          $scope.submitComment = function () {
+              $scope.mycomment.date = new Date().toISOString();
+              $scope.mycomment.author = $scope.comment.author;
+              $scope.mycomment.rating = $scope.comment.rating;
+              $scope.mycomment.comment = $scope.comment.comment;
 
-            }
+              console.log($scope.mycomment);
+
+              $scope.dish.comments.push($scope.mycomment);
+              $scope.mycomment = {rating:5, comment:"", author:"", date:""};
+              $scope.commentForm.$setPristine();
+              console.log($scope.mycomment);
+
+          }
         }])
 
         // implement the IndexController and About Controller here
