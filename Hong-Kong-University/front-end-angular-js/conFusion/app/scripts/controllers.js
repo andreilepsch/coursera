@@ -8,22 +8,10 @@ angular.module('confusionApp')
             $scope.filtText = '';
             $scope.showDetails = false;
 
-            $scope.showMenu = false;
+            $scope.showMenu = true;
             $scope.message = 'Loading...';
 
-            $scope.dishes = {};
-
-            menuFactory.getDishes()
-            .then(
-              function (response) {
-                $scope.dishes = response.data;
-                $scope.showDetails=true;
-                $scope.showMenu = true;
-              },
-              function (response) {
-                $scope.message = 'Error: '+response.status+' '+response.statusText;
-              }
-            );
+            $scope.dishes = menuFactory.getDishes().query();
 
             $scope.select = function(setTab) {
                 $scope.tab = setTab;
@@ -85,19 +73,11 @@ angular.module('confusionApp')
         .controller('DishDetailController', ['$scope','$stateParams','menuFactory', function($scope,$stateParams,menuFactory) {
 
             $scope.dish = {};
-            $scope.showDish = false;
+            $scope.showDish = true;
             $scope.message = 'Loading...';
 
-            menuFactory.getDish(parseInt($stateParams.id,10))
-            .then(
-              function (response) {
-                $scope.dish = response.data;
-                $scope.showDish = true;
-              },
-              function (response) {
-                $scope.message = 'Error: '+response.status+' '+response.statusText;
-              }
-            );
+            $scope.dish =
+              menuFactory.getDishes().get({id:parseInt($stateParams.id,10)});
 
             $scope.comment = {author: "", rating: 5, comment: "", date: new Date().toISOString()};
 
@@ -108,10 +88,16 @@ angular.module('confusionApp')
             $scope.mycomment = {rating:5, comment:"", author:"", date:""};
             $scope.submitComment = function () {
                 $scope.mycomment.date = new Date().toISOString();
+                $scope.mycomment.author = $scope.comment.author;
+                $scope.mycomment.rating = $scope.comment.rating;
+                $scope.mycomment.comment = $scope.comment.comment;
+
                 console.log($scope.mycomment);
+
                 $scope.dish.comments.push($scope.mycomment);
-                $scope.commentForm.$setPristine();
                 $scope.mycomment = {rating:5, comment:"", author:"", date:""};
+                $scope.commentForm.$setPristine();
+                console.log($scope.mycomment);
 
             }
         }])
@@ -130,19 +116,12 @@ angular.module('confusionApp')
             	// 	return Math.floor(Math.random() * max);
             	// }
 
-              $scope.dish = {};
-              $scope.showDish = false;
+              $scope.showDish = true;
               $scope.message = 'Loading...';
-              menuFactory.getDish(0)
-              .then(
-                function (response) {
-                  $scope.dish = response.data;
-                  $scope.showDish = true;
-                },
-                function (response) {
-                  $scope.message = 'Error: '+response.status+' '+response.statusText;
-                }
-              );
+
+              $scope.dish =
+                menuFactory.getDishes().get({id:0});
+
               $scope.promotion = menuFactory.getPromotion(0);
               $scope.specialist = corporateFactory.getLeader(3);
 
