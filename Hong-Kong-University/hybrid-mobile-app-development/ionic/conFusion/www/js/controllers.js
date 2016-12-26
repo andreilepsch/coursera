@@ -156,7 +156,9 @@ angular.module('conFusion.controllers', [])
             };
         }])
 
-        .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', function($scope, $stateParams, menuFactory, baseURL) {
+        .controller('DishDetailController',
+        ['$scope', '$stateParams', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicPopover', '$ionicModal',
+        function($scope, $stateParams, menuFactory, favoriteFactory, baseURL, $ionicPopover, $ionicModal) {
 
             $scope.baseURL = baseURL;
             $scope.dish = {};
@@ -173,6 +175,54 @@ angular.module('conFusion.controllers', [])
                                 $scope.message = "Error: "+response.status + " " + response.statusText;
                             }
             );
+
+            $ionicPopover.fromTemplateUrl('templates/dish-detail-popover.html', {
+                scope: $scope
+              }).then(function(popover) {
+                $scope.popover = popover;
+              });
+
+            $scope.addFavorite = function(index) {
+              console.log('index is ' + index);
+              favoriteFactory.addToFavorites(index);
+              $scope.popover.hide();
+            };
+
+            $scope.comment = {rating:5, comment:"", author:"", date:""};
+            $scope.submitComment = function () {
+                  $scope.comment.date = new Date().toISOString();
+                  $scope.dish.comments.push($scope.comment);
+                  menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+                  $scope.comment = {rating:5, comment:"", author:"", date:""};
+                  $scope.modal.hide();
+                  $scope.popover.hide();
+            }
+
+            //Popover Favorites
+            $scope.openPopover = function($event) {
+              $scope.popover.show($event);
+            };
+
+            $scope.closePopover = function() {
+              $scope.popover.hide();
+            };
+
+            //Modal Add Comment
+            $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+              scope: $scope,
+              animation: 'slide-in-up'
+            }).then(function(modal) {
+              $scope.modal = modal;
+            });
+
+            $scope.openModal = function() {
+              $scope.modal.show();
+              $scope.popover.hide();
+            };
+
+            $scope.closeModal = function() {
+              $scope.modal.hide();
+            };
 
 
         }])
