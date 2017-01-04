@@ -1,6 +1,6 @@
 angular.module('conFusion.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localStorage) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -10,7 +10,7 @@ angular.module('conFusion.controllers', [])
   //});
 
   // Form data for the login modal
-  $scope.loginData = $localStorage.getObject('userinfo','{}');
+  $scope.loginData = {};
   $scope.reservation = {};
 
   // Create the login modal that we will use later
@@ -33,7 +33,6 @@ angular.module('conFusion.controllers', [])
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
-    $localStorage.storeObject('userinfo',$scope.loginData);
 
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
@@ -73,8 +72,8 @@ angular.module('conFusion.controllers', [])
 })
 
 .controller('MenuController',
-  ['$scope', 'favoriteFactory', 'baseURL', 'dishes', '$ionicListDelegate',
-  function($scope, favoriteFactory, baseURL, dishes, $ionicListDelegate) {
+  ['$scope', 'menuFactory', 'favoriteFactory','baseURL', '$ionicListDelegate',
+  function($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
 
             $scope.baseURL = baseURL;
             $scope.tab = 1;
@@ -83,7 +82,14 @@ angular.module('conFusion.controllers', [])
             $scope.showMenu = false;
             $scope.message = "Loading ...";
 
-            $scope.dishes = dishes;
+            $scope.dishes = menuFactory.query(
+                function(response) {
+                    $scope.dishes = response;
+                    $scope.showMenu = true;
+                },
+                function(response) {
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                });
 
 
             $scope.select = function(setTab) {
@@ -222,8 +228,7 @@ angular.module('conFusion.controllers', [])
                 console.log($scope.mycomment);
 
                 $scope.dish.comments.push($scope.mycomment);
-
-                menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+        menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
 
                 $scope.commentForm.$setPristine();
 
@@ -233,17 +238,23 @@ angular.module('conFusion.controllers', [])
 
         // implement the IndexController and About Controller here
 
-        .controller('IndexController', ['$scope', 'dish', 'promotion', 'leader', 'baseURL', function($scope, dish, promotion, leader, baseURL) {
+        .controller('IndexController', ['$scope', 'menuFactory', 'promotionFactory', 'corporateFactory','baseURL', function($scope, menuFactory, promotionFactory, corporateFactory,baseURL) {
 
                         $scope.baseURL = baseURL;
-
-                        $scope.leader = leader;
-                        $scope.dish = dish;
-                        $scope.promotion = promotion;
-
+                        $scope.leader = corporateFactory.get({id:3});
                         $scope.showDish = false;
                         $scope.message="Loading ...";
-
+                        $scope.dish = menuFactory.get({id:0})
+                        .$promise.then(
+                            function(response){
+                                $scope.dish = response;
+                                $scope.showDish = true;
+                            },
+                            function(response) {
+                                $scope.message = "Error: "+response.status + " " + response.statusText;
+                            }
+                        );
+                        $scope.promotion = promotionFactory.get({id:0});
 
                     }])
 
@@ -255,10 +266,7 @@ angular.module('conFusion.controllers', [])
 
         }])
 
-        .controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout',
-         function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
-
-            $scope.baseURL = baseURL;
+        .controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {            $scope.baseURL = baseURL;
             $scope.shouldShowDelete = false;
 
             // $ionicLoading.show({
